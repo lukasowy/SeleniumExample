@@ -28,26 +28,26 @@ public class PopUpWindow {
 
 		String MainWindow = driver.getWindowHandle();
 
-		// To handle all new opened window.
 		Set<String> s1 = driver.getWindowHandles();
 		Iterator<String> i1 = s1.iterator();
-
+		
+		System.out.println(MainWindow);
+		System.out.println(s1);
+		
 		while (i1.hasNext()) {
+			String parent = i1.next();
 			String ChildWindow = i1.next();
 
-			if (!MainWindow.equalsIgnoreCase(ChildWindow)) {
-
-				// Switching to Child window
 				driver.switchTo().window(ChildWindow);
 				driver.findElement(By.name("emailid")).sendKeys("gaurav.3n@gmail.com");
 
 				driver.findElement(By.name("btnLogin")).click();
 
-				// Closing the Child Window.
 				driver.close();
-			}
+			
 		}
-		// Switching to Parent window i.e Main Window.
+		
+//		driver.switchTo().defaultContent();
 		driver.switchTo().window(MainWindow);
 		driver.close();
 	}
