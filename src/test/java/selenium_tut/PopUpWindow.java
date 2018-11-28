@@ -7,7 +7,6 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
 
 public class PopUpWindow {
 
@@ -15,10 +14,10 @@ public class PopUpWindow {
 	public void popUpWindow() {
 
 		System.setProperty("webdriver.gecko.driver", "webdriver/geckodriver_0.19.1-win32.exe");
-		FirefoxOptions options = new FirefoxOptions();
-		options.setCapability("marionette", false);
+//		FirefoxOptions options = new FirefoxOptions();
+//		options.setCapability("marionette", false);
 
-		WebDriver driver = new FirefoxDriver(options);
+		WebDriver driver = new FirefoxDriver();
 
 		driver.manage().window().maximize();
 
@@ -26,6 +25,9 @@ public class PopUpWindow {
 
 		driver.findElement(By.xpath("//*[contains(@href,'popup.php')]")).click();
 
+		
+		
+		
 		String MainWindow = driver.getWindowHandle();
 
 		Set<String> s1 = driver.getWindowHandles();
@@ -50,6 +52,7 @@ public class PopUpWindow {
 //		driver.switchTo().defaultContent();
 		driver.switchTo().window(MainWindow);
 		driver.close();
+		driver.quit();
 	}
 
 }
