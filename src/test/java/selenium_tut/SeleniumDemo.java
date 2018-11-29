@@ -18,11 +18,12 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.OutputType;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class SeleniumDemo {
@@ -31,18 +32,19 @@ public class SeleniumDemo {
 	public void test() throws Exception {
 
 		System.setProperty("webdriver.gecko.driver", "webdriver/geckodriver_0.19.1-win32.exe");
-		FirefoxOptions options = new FirefoxOptions();
-		options.setCapability("marionette", false);
+		// FirefoxOptions options = new FirefoxOptions();
+		// options.setCapability("marionette", false);
 
-		WebDriver driver = new FirefoxDriver(options);
+		WebDriver driver = new FirefoxDriver();
 
 		driver.get("https://www.bing.com/");
 		setMaxWindow(driver);
-		clickLink(driver, "Images");
+		clickLink(driver, "Obrazy");
+		locationOfElement(driver, "Obrazy");
 		System.out.println(getCurrentUrl(driver));
 		setWindowSize(driver, 650, 700);
 		getDomainName(driver);
-		// getCookies(driver);;
+		// getCookies(driver);
 		savePageSourceHTML(driver);
 		openNewWindow(driver, "https://facebook.com");
 		refreshWebpage(driver);
@@ -50,13 +52,15 @@ public class SeleniumDemo {
 		scrollToBottom(driver);
 
 		Assert.assertTrue(getTitle(driver).contains("Facebook"));
+
 		getParentWindow(driver);
 		getAllWindows(driver);
-		takeSnapShot(driver, "B://Selenium//Screenshot//test" + Math.random() + ".png");
+		takeSnapShot(driver, "D://Selenium//Screenshot//test" + Math.random() + ".png");
 		countIFrames(driver);
 		switchToNewWindow(driver);
 		clickByClass(driver, "sc_active");
-		clickXPathLink(driver, "Privacy and Cookies");
+		clickXPathLink(driver, "Prywatnoœæ i pliki cookie");
+		moveWindowToXY(driver, 200, 700);
 		// findAllLinks(driver);
 		driver.quit();
 	}
@@ -148,6 +152,11 @@ public class SeleniumDemo {
 		}
 	}
 
+	public void rightClick(WebDriver driver) {
+		Actions action = new Actions(driver);
+		action.contextClick().build().perform();
+	}
+
 	public void clickLink(WebDriver driver, String text) {
 		driver.findElement(By.linkText(text)).click();
 	}
@@ -188,7 +197,7 @@ public class SeleniumDemo {
 	public void savePageSourceHTML(WebDriver driver) {
 		String source = driver.getPageSource();
 
-		File newFile = new File("B://Selenium//Screenshot//selenium" + Math.random() + ".txt");
+		File newFile = new File("D://Selenium//Screenshot//selenium" + Math.random() + ".txt");
 		try {
 			FileWriter fw = new FileWriter(newFile);
 			fw.write(source);
@@ -196,5 +205,18 @@ public class SeleniumDemo {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void moveWindowToXY(WebDriver driver, int x, int y) {
+		Point point = new Point(x, y);
+		driver.manage().window().setPosition(point);
+	}
+
+	public void locationOfElement(WebDriver driver, String link) {
+		WebElement element = driver.findElement(By.linkText(link));
+		Point cord = element.getLocation();
+		int x = cord.getX();
+		int y = cord.getY();
+		System.out.println("(" + x + ", " + y + ")");
 	}
 }
